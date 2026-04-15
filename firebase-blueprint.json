@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User specific settings and profile data",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "WorkoutTemplate": {
+      "title": "Workout Template",
+      "description": "A template for a recurring workout (e.g., Monday - Chest)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "dayOfWeek": { "type": "string", "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] },
+        "exercises": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "exercises", "createdAt"]
+    },
+    "ExerciseLog": {
+      "title": "Exercise Log",
+      "description": "A record of an exercise performed during a session",
+      "type": "object",
+      "properties": {
+        "exerciseName": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "sets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "reps": { "type": "number" },
+              "weight": { "type": "number" }
+            }
+          }
+        },
+        "workoutName": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["exerciseName", "date", "sets"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document"
+    },
+    "/users/{userId}/templates/{templateId}": {
+      "schema": "WorkoutTemplate",
+      "description": "User's workout templates"
+    },
+    "/users/{userId}/logs/{logId}": {
+      "schema": "ExerciseLog",
+      "description": "History of exercises performed"
+    }
+  }
+}

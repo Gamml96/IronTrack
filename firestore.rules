@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['email', 'createdAt']) &&
+             data.email is string &&
+             data.createdAt is string;
+    }
+
+    function isValidTemplate(data) {
+      return data.keys().hasAll(['name', 'exercises', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.exercises is list &&
+             data.createdAt is string;
+    }
+
+    function isValidLog(data) {
+      return data.keys().hasAll(['exerciseName', 'date', 'sets']) &&
+             data.exerciseName is string && data.exerciseName.size() > 0 &&
+             data.date is string &&
+             data.sets is list;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserProfile(request.resource.data);
+      allow update: if isOwner(userId) && isValidUserProfile(request.resource.data);
+
+      match /templates/{templateId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidTemplate(request.resource.data);
+        allow update: if isOwner(userId) && isValidTemplate(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      match /logs/{logId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidLog(request.resource.data);
+        allow update: if isOwner(userId) && isValidLog(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}
