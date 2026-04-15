@@ -22,6 +22,8 @@ import { Toaster } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
 import { StatsHeader } from './components/StatsHeader';
 import { PWAInstallPrompt } from './components/PWAInstallPrompt';
+import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeToggle } from './components/ThemeToggle';
 
 export default function App() {
   const [activeView, setActiveView] = useState<'dashboard' | 'logging'>('dashboard');
@@ -44,29 +46,37 @@ export default function App() {
   };
 
   return (
-    <AuthWrapper>
-      {(user) => (
-        <div className="flex flex-col lg:flex-row min-h-screen bg-background text-text-main font-sans overflow-hidden">
-          <Toaster position="top-center" richColors theme="dark" />
-          <PWAInstallPrompt />
-          
-          {/* Mobile Header */}
-          <header className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-50">
-            <div className="flex items-center gap-2 text-accent font-extrabold text-lg tracking-tight">
-              <Dumbbell className="h-5 w-5" />
-              <span>IRONTRACK</span>
-            </div>
-            <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-xs">
-              {user.displayName?.charAt(0)}
-            </div>
-          </header>
+    <ThemeProvider defaultTheme="dark">
+      <AuthWrapper>
+        {(user) => (
+          <div className="flex flex-col lg:flex-row min-h-screen bg-background text-text-main font-sans overflow-hidden">
+            <Toaster position="top-center" richColors theme="dark" />
+            <PWAInstallPrompt />
+            
+            {/* Mobile Header */}
+            <header className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-50">
+              <div className="flex items-center gap-2 text-accent font-extrabold text-lg tracking-tight">
+                <Dumbbell className="h-5 w-5" />
+                <span>IRONTRACK</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <ThemeToggle />
+                <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-xs">
+                  {user.displayName?.charAt(0)}
+                </div>
+              </div>
+            </header>
 
-          {/* Sidebar (Desktop) */}
-          <aside className="hidden lg:flex w-[240px] border-r border-border p-6 flex-col gap-8 shrink-0">
-            <div className="flex items-center gap-2 text-accent font-extrabold text-xl tracking-tight">
-              <Dumbbell className="h-6 w-6" />
-              <span>IRONTRACK</span>
-            </div>
+            {/* Sidebar (Desktop) */}
+            <aside className="hidden lg:flex w-[240px] border-r border-border p-6 flex-col gap-8 shrink-0">
+              <div className="flex items-center gap-2 text-accent font-extrabold text-xl tracking-tight">
+                <Dumbbell className="h-6 w-6" />
+                <span>IRONTRACK</span>
+              </div>
+
+              <div className="px-2">
+                <ThemeToggle />
+              </div>
 
             <nav className="flex flex-col gap-2">
               {[
@@ -267,5 +277,6 @@ export default function App() {
         </div>
       )}
     </AuthWrapper>
+    </ThemeProvider>
   );
 }
