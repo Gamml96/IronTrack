@@ -21,6 +21,7 @@ import { signOut } from 'firebase/auth';
 import { Toaster } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
 import { StatsHeader } from './components/StatsHeader';
+import { PWAInstallPrompt } from './components/PWAInstallPrompt';
 
 export default function App() {
   const [activeView, setActiveView] = useState<'dashboard' | 'logging'>('dashboard');
@@ -47,6 +48,7 @@ export default function App() {
       {(user) => (
         <div className="flex flex-col lg:flex-row min-h-screen bg-background text-text-main font-sans overflow-hidden">
           <Toaster position="top-center" richColors theme="dark" />
+          <PWAInstallPrompt />
           
           {/* Mobile Header */}
           <header className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-50">
