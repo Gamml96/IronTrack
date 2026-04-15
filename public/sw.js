@@ -1,17 +1,6 @@
-const CACHE_NAME = 'irontrack-v3';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon.svg'
-];
+const CACHE_NAME = 'irontrack-v4';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
   self.skipWaiting();
 });
 
@@ -33,25 +22,26 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
 
-  // Só intercepta GET
   if (request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const fetchPromise = fetch(request)
         .then((networkResponse) => {
-          // Atualiza cache
-          if (networkResponse && networkResponse.status === 200) {
-            return caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, networkResponse.clone());
-              return networkResponse;
-            });
+          if (!networkResponse || networkResponse.status !== 200) {
+            return networkResponse;
           }
+
+          const responseClone = networkResponse.clone();
+
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseClone);
+          });
+
           return networkResponse;
         })
         .catch(() => cachedResponse);
 
-      // Retorna cache primeiro (rápido), depois atualiza (Stale-While-Revalidate)
       return cachedResponse || fetchPromise;
     })
   );
