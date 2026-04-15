@@ -53,32 +53,35 @@ export const History: React.FC<HistoryProps> = ({ user, onEdit }) => {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xs font-bold text-text-dim uppercase tracking-widest flex items-center gap-2">
-        <HistoryIcon className="h-4 w-4" /> Histórico Recente
-      </h2>
-      <div className="grid gap-3">
+    <div className="space-y-6">
+      <div className="flex items-center gap-2">
+        <div className="w-1 h-5 bg-primary rounded-full" />
+        <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+          <HistoryIcon className="h-4 w-4 text-primary" /> Histórico Recente
+        </h2>
+      </div>
+      <div className="grid gap-4">
         {logs.map((log) => (
-          <Card key={log.id} className="border-border bg-card text-text-main hover:border-accent/30 transition-colors group">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-3">
-                <div className="space-y-1">
-                  <h3 className="font-bold text-accent tracking-tight">{log.exerciseName}</h3>
-                  <div className="flex items-center gap-1 text-[10px] text-text-dim font-mono uppercase">
-                    <Calendar className="h-3 w-3" />
+          <Card key={log.id} className="border-border/40 bg-card/80 backdrop-blur-sm text-foreground hover:border-primary/30 transition-all duration-300 group shadow-sm hover:shadow-md rounded-3xl">
+            <CardContent className="p-5">
+              <div className="flex justify-between items-start mb-4">
+                <div className="space-y-1.5">
+                  <h3 className="font-bold text-lg text-primary tracking-tight leading-none">{log.exerciseName}</h3>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-medium uppercase">
+                    <Calendar className="h-3.5 w-3.5" />
                     {format(new Date(log.date), "dd MMM, HH:mm", { locale: ptBR })}
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <button 
                     onClick={() => onEdit?.(log)}
-                    className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
+                    className="p-2.5 rounded-2xl bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                   >
                     <Edit2 className="h-4 w-4" />
                   </button>
                   <button 
                     onClick={() => handleDelete(log.id)}
-                    className="p-2 rounded-lg bg-red-400/10 text-red-400 hover:bg-red-400/20 transition-colors"
+                    className="p-2.5 rounded-2xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all duration-300"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -86,11 +89,11 @@ export const History: React.FC<HistoryProps> = ({ user, onEdit }) => {
               </div>
               <div className="flex flex-wrap gap-2">
                 {log.sets.map((set, i) => (
-                  <div key={i} className="bg-background rounded px-2 py-1 text-[10px] border border-border font-mono">
-                    <span className="text-text-dim mr-1">{i + 1}ª:</span>
-                    <span className="font-bold text-text-main">{set.weight}kg</span>
-                    <span className="mx-1 text-text-dim">x</span>
-                    <span className="text-text-main">{set.reps}</span>
+                  <div key={i} className="bg-background/60 rounded-xl px-3 py-1.5 text-[11px] border border-border/50 font-semibold shadow-sm">
+                    <span className="text-muted-foreground mr-1.5">{i + 1}ª:</span>
+                    <span className="text-foreground">{set.weight}kg</span>
+                    <span className="mx-1.5 text-muted-foreground">x</span>
+                    <span className="text-foreground">{set.reps}</span>
                   </div>
                 ))}
               </div>
@@ -98,8 +101,8 @@ export const History: React.FC<HistoryProps> = ({ user, onEdit }) => {
           </Card>
         ))}
         {logs.length === 0 && (
-          <div className="text-center py-10 text-text-dim italic text-sm">
-            Nenhum treino registrado ainda.
+          <div className="text-center py-12 text-muted-foreground italic text-sm bg-primary/5 rounded-3xl border border-dashed border-primary/20">
+            Nenhum treino registrado ainda. ✨
           </div>
         )}
       </div>

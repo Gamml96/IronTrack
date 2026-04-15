@@ -103,43 +103,43 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="border-border bg-card text-text-main shadow-lg">
-        <CardHeader>
-          <CardTitle>{editingId ? 'Editar Treino' : 'Criar Novo Treino'}</CardTitle>
-          <CardDescription className="text-text-dim">
-            {editingId ? 'Atualize os detalhes da sua rotina' : 'Defina sua rotina semanal'}
+    <div className="space-y-10">
+      <Card className="border-border/50 bg-card text-foreground shadow-2xl rounded-3xl overflow-hidden">
+        <CardHeader className="bg-primary/5 border-b border-border/50 p-6 lg:p-8">
+          <CardTitle className="text-2xl font-bold tracking-tight">{editingId ? 'Editar Treino ✨' : 'Criar Novo Treino ✨'}</CardTitle>
+          <CardDescription className="text-muted-foreground font-medium">
+            {editingId ? 'Atualize os detalhes da sua rotina favorita' : 'Defina sua rotina semanal com carinho'}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="p-6 lg:p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-xs uppercase tracking-wider text-text-dim">Nome do Treino</Label>
+              <Label htmlFor="name" className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold ml-2">Nome do Treino</Label>
               <Input 
                 id="name" 
                 value={newName} 
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder="Ex: Peito e Tríceps"
-                className="bg-background border-border text-text-main focus:border-accent"
+                className="h-12 bg-background/50 border-border/60 text-foreground focus:border-primary rounded-2xl px-5"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="exercises" className="text-xs uppercase tracking-wider text-text-dim">Exercícios (separados por vírgula)</Label>
+              <Label htmlFor="exercises" className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold ml-2">Exercícios (separados por vírgula)</Label>
               <Input 
                 id="exercises" 
                 value={newExercises} 
                 onChange={(e) => setNewExercises(e.target.value)}
                 placeholder="Ex: Supino Reto, Crucifixo, Tríceps Corda"
-                className="bg-background border-border text-text-main focus:border-accent"
+                className="h-12 bg-background/50 border-border/60 text-foreground focus:border-primary rounded-2xl px-5"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="day" className="text-xs uppercase tracking-wider text-text-dim">Dia da Semana (Opcional)</Label>
+              <Label htmlFor="day" className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold ml-2">Dia da Semana (Opcional)</Label>
               <select
                 id="day"
                 value={newDay}
                 onChange={(e) => setNewDay(e.target.value)}
-                className="w-full h-10 px-3 rounded-md bg-background border border-border text-text-main focus:border-accent outline-none text-sm"
+                className="w-full h-12 px-5 rounded-2xl bg-background/50 border border-border/60 text-foreground focus:border-primary outline-none text-sm font-medium transition-all"
               >
                 <option value="">Nenhum dia específico</option>
                 {daysOfWeek.map(day => (
@@ -147,13 +147,13 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
                 ))}
               </select>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
               {editingId && (
-                <Button type="button" variant="outline" onClick={resetForm} className="flex-1 border-border text-text-dim">
+                <Button type="button" variant="outline" onClick={resetForm} className="flex-1 h-12 border-border text-muted-foreground rounded-2xl font-bold">
                   <X className="h-4 w-4 mr-2" /> Cancelar
                 </Button>
               )}
-              <Button type="submit" className="flex-1 gap-2 bg-accent hover:bg-accent/90 text-background font-bold">
+              <Button type="submit" className="flex-1 h-12 gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-2xl shadow-lg shadow-primary/20">
                 {editingId ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                 {editingId ? 'Salvar Alterações' : 'Adicionar Treino'}
               </Button>
@@ -162,7 +162,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <AnimatePresence>
           {templates.map((template) => (
             <motion.div
@@ -170,13 +170,14 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
+              className="h-full"
             >
-              <Card className={`border-border bg-card text-text-main h-full transition-all ${editingId === template.id ? 'border-accent ring-1 ring-accent' : 'hover:border-accent/50'}`}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <div className="space-y-1">
-                    <CardTitle className="text-lg font-bold tracking-tight">{template.name}</CardTitle>
+              <Card className={`border-border/40 bg-card text-foreground h-full transition-all duration-300 rounded-3xl shadow-sm hover:shadow-md ${editingId === template.id ? 'border-primary ring-2 ring-primary/20' : 'hover:border-primary/30'}`}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                  <div className="space-y-1.5">
+                    <CardTitle className="text-xl font-bold tracking-tight text-primary">{template.name}</CardTitle>
                     {template.dayOfWeek && (
-                      <p className="text-[10px] text-accent font-bold uppercase tracking-widest">{template.dayOfWeek}</p>
+                      <p className="text-[10px] text-secondary font-black uppercase tracking-widest bg-secondary/10 px-2 py-0.5 rounded-full inline-block">{template.dayOfWeek}</p>
                     )}
                   </div>
                   <div className="flex gap-2">
@@ -184,7 +185,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
                       variant="outline" 
                       size="icon" 
                       onClick={() => handleEdit(template)}
-                      className="h-9 w-9 border-border bg-background/50 text-accent hover:bg-accent/10 transition-colors"
+                      className="h-10 w-10 border-border/60 bg-background/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-xl"
                     >
                       <Edit2 className="h-4 w-4" />
                     </Button>
@@ -192,7 +193,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
                       variant="outline" 
                       size="icon" 
                       onClick={() => handleDelete(template.id)}
-                      className="h-9 w-9 border-border bg-background/50 text-red-400 hover:bg-red-400/10 transition-colors"
+                      className="h-10 w-10 border-border/60 bg-background/50 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all duration-300 rounded-xl"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -201,7 +202,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
                 <CardContent>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {template.exercises.map((ex, i) => (
-                      <span key={i} className="rounded bg-background border border-border px-3 py-1 text-[10px] font-mono text-text-dim uppercase tracking-wider">
+                      <span key={i} className="rounded-xl bg-muted/50 border border-border/30 px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         {ex}
                       </span>
                     ))}

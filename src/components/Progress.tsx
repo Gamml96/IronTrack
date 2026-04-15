@@ -56,82 +56,100 @@ export const Progress: React.FC<{ user: User }> = ({ user }) => {
     }));
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xs font-bold text-text-dim uppercase tracking-widest flex items-center gap-2">
-          <TrendingUp className="h-4 w-4" /> Evolução de Carga
-        </h2>
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-5 bg-primary rounded-full" />
+          <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-primary" /> Evolução de Carga
+          </h2>
+        </div>
         <Select value={selectedExercise} onValueChange={setSelectedExercise}>
-          <SelectTrigger className="w-[200px] bg-card border-border text-text-main h-9 text-xs">
+          <SelectTrigger className="w-full sm:w-[240px] bg-card border-border/60 text-foreground h-11 rounded-2xl shadow-sm">
             <SelectValue placeholder="Selecione o exercício" />
           </SelectTrigger>
-          <SelectContent className="bg-card border-border text-text-main">
+          <SelectContent className="bg-card border-border text-foreground rounded-2xl">
             {exercises.map(ex => (
-              <SelectItem key={ex} value={ex} className="text-xs">{ex}</SelectItem>
+              <SelectItem key={ex} value={ex} className="text-sm font-medium">{ex}</SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      <Card className="border-border bg-card p-6 shadow-lg">
-        <div className="h-[300px] w-full">
+      <Card className="border-border/40 bg-card p-6 lg:p-8 shadow-2xl rounded-3xl overflow-hidden">
+        <div className="h-[350px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="opacity-10" vertical={false} />
               <XAxis 
                 dataKey="date" 
-                stroke="#94A3B8" 
-                fontSize={10}
+                stroke="currentColor" 
+                className="opacity-40"
+                fontSize={11}
                 tickLine={false}
                 axisLine={false}
+                dy={10}
               />
               <YAxis 
-                stroke="#94A3B8" 
-                fontSize={10}
+                stroke="currentColor" 
+                className="opacity-40"
+                fontSize={11}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${value}kg`}
+                dx={-10}
               />
               <Tooltip 
-                contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', fontSize: '12px' }}
-                itemStyle={{ color: '#38bdf8' }}
+                contentStyle={{ 
+                  backgroundColor: 'var(--card)', 
+                  border: '1px solid var(--border)', 
+                  borderRadius: '16px', 
+                  fontSize: '12px',
+                  boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'
+                }}
+                itemStyle={{ color: 'var(--primary)', fontWeight: 'bold' }}
               />
-              <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }} />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '30px', fontWeight: 'bold' }} />
               <Line 
                 type="monotone" 
                 dataKey="weight" 
                 name="Carga Máxima"
-                stroke="#38bdf8" 
-                strokeWidth={3}
-                dot={{ fill: '#38bdf8', r: 4, strokeWidth: 2, stroke: '#1e293b' }}
-                activeDot={{ r: 6, strokeWidth: 0 }}
+                stroke="var(--primary)" 
+                strokeWidth={4}
+                dot={{ fill: 'var(--primary)', r: 5, strokeWidth: 3, stroke: 'var(--card)' }}
+                activeDot={{ r: 8, strokeWidth: 0 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </Card>
 
-      <Card className="border-border bg-card p-6 shadow-lg">
-        <CardHeader className="p-0 mb-6">
-          <CardTitle className="text-[10px] uppercase tracking-widest text-text-dim font-bold">Volume Total de Treino</CardTitle>
+      <Card className="border-border/40 bg-card p-6 lg:p-8 shadow-2xl rounded-3xl overflow-hidden">
+        <CardHeader className="p-0 mb-8">
+          <CardTitle className="text-[10px] uppercase tracking-widest text-muted-foreground font-black">Volume Total de Treino</CardTitle>
         </CardHeader>
         <div className="h-[200px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="opacity-10" vertical={false} />
               <XAxis dataKey="date" hide />
               <YAxis hide />
               <Tooltip 
-                contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', fontSize: '12px' }}
+                contentStyle={{ 
+                  backgroundColor: 'var(--card)', 
+                  border: '1px solid var(--border)', 
+                  borderRadius: '16px', 
+                  fontSize: '12px',
+                  boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'
+                }}
               />
               <Line 
                 type="monotone" 
                 dataKey="volume" 
                 name="Volume (kg * reps)"
-                stroke="#22c55e" 
-                strokeWidth={2}
+                stroke="var(--secondary)" 
+                strokeWidth={3}
                 dot={false}
-                fill="url(#colorVolume)"
               />
             </LineChart>
           </ResponsiveContainer>

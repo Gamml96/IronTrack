@@ -46,44 +46,48 @@ export default function App() {
   };
 
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="light">
       <AuthWrapper>
         {(user) => (
-          <div className="flex flex-col lg:flex-row min-h-screen bg-background text-text-main font-sans overflow-hidden">
-            <Toaster position="top-center" richColors theme="dark" />
+          <div className="flex flex-col lg:flex-row min-h-screen bg-background text-foreground font-sans overflow-hidden">
+            <Toaster position="top-center" richColors />
             <PWAInstallPrompt />
             
             {/* Mobile Header */}
             <header className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-50">
-              <div className="flex items-center gap-2 text-accent font-extrabold text-lg tracking-tight">
-                <Dumbbell className="h-5 w-5" />
-                <span>IRONTRACK</span>
+              <div className="flex items-center gap-2 text-primary font-bold text-xl tracking-tight">
+                <div className="p-1.5 bg-primary/10 rounded-xl">
+                  <Dumbbell className="h-5 w-5 text-primary" />
+                </div>
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">IronTrack</span>
               </div>
               <div className="flex items-center gap-3">
                 <ThemeToggle />
-                <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-xs">
+                <div className="h-9 w-9 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-bold text-sm border border-primary/20 shadow-sm">
                   {user.displayName?.charAt(0)}
                 </div>
               </div>
             </header>
 
             {/* Sidebar (Desktop) */}
-            <aside className="hidden lg:flex w-[240px] border-r border-border p-6 flex-col gap-8 shrink-0">
-              <div className="flex items-center gap-2 text-accent font-extrabold text-xl tracking-tight">
-                <Dumbbell className="h-6 w-6" />
-                <span>IRONTRACK</span>
+            <aside className="hidden lg:flex w-[280px] border-r border-border p-8 flex-col gap-10 shrink-0 bg-card/30">
+              <div className="flex items-center gap-3 text-primary font-bold text-2xl tracking-tight">
+                <div className="p-2 bg-primary/10 rounded-2xl shadow-sm">
+                  <Dumbbell className="h-6 w-6 text-primary" />
+                </div>
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">IronTrack</span>
               </div>
 
-              <div className="px-2">
+              <div className="px-1">
                 <ThemeToggle />
               </div>
 
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-3">
               {[
-                { id: 'today', label: 'Hoje', icon: LayoutDashboard },
-                { id: 'history', label: 'Histórico', icon: HistoryIcon },
-                { id: 'progress', label: 'Progresso', icon: TrendingUp },
-                { id: 'settings', label: 'Treinos', icon: Settings },
+                { id: 'today', label: 'Meu Dia', icon: LayoutDashboard },
+                { id: 'history', label: 'Jornada', icon: HistoryIcon },
+                { id: 'progress', label: 'Conquistas', icon: TrendingUp },
+                { id: 'settings', label: 'Rotinas', icon: Settings },
               ].map((item) => (
                 <button
                   key={item.id}
@@ -92,68 +96,68 @@ export default function App() {
                     setActiveView('dashboard');
                     setEditingLog(null);
                   }}
-                  className={`flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  className={`flex items-center justify-between px-5 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 ${
                     activeTab === item.id && activeView === 'dashboard'
-                      ? 'bg-accent-glow text-accent'
-                      : 'text-text-dim hover:bg-card hover:text-text-main'
+                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]'
+                      : 'text-muted-foreground hover:bg-primary/5 hover:text-primary'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <item.icon className="h-4 w-4" />
+                    <item.icon className={`h-4.5 w-4.5 ${activeTab === item.id ? 'animate-pulse' : ''}`} />
                     {item.label}
                   </div>
-                  {item.id === 'today' && <div className="w-2 h-2 rounded-full bg-success" />}
+                  {item.id === 'today' && <div className="w-2 h-2 rounded-full bg-success animate-bounce" />}
                 </button>
               ))}
             </nav>
 
-            <div className="mt-auto pt-6 border-t border-border">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-xs">
+            <div className="mt-auto pt-8 border-t border-border/50">
+              <div className="flex items-center gap-4 mb-6 p-3 rounded-2xl bg-primary/5 border border-primary/10">
+                <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
                   {user.displayName?.charAt(0)}
                 </div>
                 <div className="overflow-hidden">
-                  <p className="text-xs font-semibold truncate">{user.displayName}</p>
-                  <p className="text-[10px] text-text-dim truncate">{user.email}</p>
+                  <p className="text-sm font-bold truncate">{user.displayName}</p>
+                  <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
                 </div>
               </div>
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={handleSignOut}
-                className="w-full justify-start gap-2 text-text-dim hover:text-red-400 hover:bg-red-400/10"
+                className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl"
               >
-                <LogOut className="h-4 w-4" /> Sair
+                <LogOut className="h-4 w-4" /> Sair da conta
               </Button>
             </div>
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 p-4 lg:p-8 overflow-y-auto pb-24 lg:pb-8">
+          <main className="flex-1 p-6 lg:p-12 overflow-y-auto pb-24 lg:pb-12 bg-background/50">
             <AnimatePresence mode="wait">
               {activeView === 'dashboard' ? (
                 <motion.div
                   key="dashboard"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-6 lg:space-y-8"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ type: "spring", duration: 0.5 }}
+                  className="max-w-6xl mx-auto space-y-10"
                 >
                   <header className="space-y-6">
                     <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4">
                       <div>
-                        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">
-                          {activeTab === 'today' && 'Treino de Hoje'}
-                          {activeTab === 'history' && 'Histórico de Treinos'}
-                          {activeTab === 'progress' && 'Sua Evolução'}
-                          {activeTab === 'settings' && 'Gerenciar Rotinas'}
+                        <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                          {activeTab === 'today' && 'Olá! Vamos treinar? ✨'}
+                          {activeTab === 'history' && 'Sua Jornada'}
+                          {activeTab === 'progress' && 'Suas Conquistas'}
+                          {activeTab === 'settings' && 'Minhas Rotinas'}
                         </h1>
-                        <p className="text-text-dim text-xs lg:text-sm mt-1">
-                          {activeTab === 'today' && 'Selecione um exercício para começar'}
-                          {activeTab === 'history' && 'Acompanhe sua jornada'}
-                          {activeTab === 'progress' && 'Visualização de dados e performance'}
-                          {activeTab === 'settings' && 'Configure seus exercícios e dias'}
+                        <p className="text-muted-foreground text-sm lg:text-base mt-2 font-medium">
+                          {activeTab === 'today' && 'Escolha um exercício e brilhe hoje!'}
+                          {activeTab === 'history' && 'Cada treino é um passo para sua melhor versão.'}
+                          {activeTab === 'progress' && 'Veja o quanto você já evoluiu!'}
+                          {activeTab === 'settings' && 'Personalize seus treinos com carinho.'}
                         </p>
                       </div>
                     </div>
@@ -161,12 +165,15 @@ export default function App() {
                     {activeTab === 'today' && <StatsHeader user={user} />}
                   </header>
 
-                  <div className="space-y-8">
+                  <div className="space-y-12">
                     {activeTab === 'today' && (
-                      <div className="grid gap-8 lg:grid-cols-3">
-                        <div className="lg:col-span-2 space-y-6">
-                          <div className="space-y-4">
-                            <h3 className="text-xs font-bold text-text-dim uppercase tracking-widest">Seus Treinos Salvos</h3>
+                      <div className="grid gap-10 lg:grid-cols-3">
+                        <div className="lg:col-span-2 space-y-8">
+                          <div className="space-y-5">
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-6 bg-primary rounded-full" />
+                              <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Treinos Favoritos</h3>
+                            </div>
                             <UserTemplatesList 
                               user={user} 
                               onSelectExercise={(ex) => {
@@ -176,15 +183,18 @@ export default function App() {
                             />
                           </div>
 
-                          <div className="space-y-4">
-                            <h3 className="text-xs font-bold text-text-dim uppercase tracking-widest">Exercícios Comuns</h3>
-                            <div className="flex flex-wrap gap-2">
+                          <div className="space-y-5">
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-6 bg-secondary rounded-full" />
+                              <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Sugestões Rápidas</h3>
+                            </div>
+                            <div className="flex flex-wrap gap-3">
                               {["Supino Reto", "Agachamento", "Levantamento Terra", "Rosca Direta", "Puxada Frente"].map(ex => (
                                 <Button 
                                   key={ex} 
                                   variant="outline" 
-                                  size="sm"
-                                  className="border-border bg-card hover:bg-accent-glow hover:text-accent text-xs"
+                                  size="default"
+                                  className="rounded-2xl border-primary/20 bg-card hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm hover:shadow-md"
                                   onClick={() => {
                                     setSelectedExercise(ex);
                                     setActiveView('logging');
@@ -197,7 +207,7 @@ export default function App() {
                           </div>
                         </div>
                         
-                        <div className="space-y-4">
+                        <div className="space-y-6">
                            <History user={user} onEdit={handleEditLog} />
                         </div>
                       </div>
@@ -211,18 +221,18 @@ export default function App() {
               ) : (
                 <motion.div
                   key="logging"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ type: "spring", duration: 0.5 }}
                   className="max-w-2xl mx-auto"
                 >
                   <Button 
                     variant="ghost" 
                     onClick={handleCompleteLogging}
-                    className="mb-6 gap-2 text-text-dim hover:text-text-main -ml-2 lg:ml-0"
+                    className="mb-8 gap-2 text-muted-foreground hover:text-primary -ml-2 lg:ml-0 rounded-xl"
                   >
-                    <ChevronLeft className="h-4 w-4" /> Voltar ao Painel
+                    <ChevronLeft className="h-4 w-4" /> Voltar para o início
                   </Button>
                   
                   {selectedExercise && (
@@ -240,10 +250,10 @@ export default function App() {
           </main>
 
           {/* Mobile Bottom Navigation */}
-          <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-card/80 border-t border-border px-2 py-2 flex justify-around items-center z-50 backdrop-blur-lg">
+          <nav className="lg:hidden fixed bottom-4 left-4 right-4 bg-card/90 border border-border/50 px-4 py-3 flex justify-around items-center z-50 backdrop-blur-xl rounded-3xl shadow-2xl">
             {[
               { id: 'today', icon: LayoutDashboard, label: 'Hoje' },
-              { id: 'history', icon: HistoryIcon, label: 'Histórico' },
+              { id: 'history', icon: HistoryIcon, label: 'Jornada' },
               { id: 'progress', icon: TrendingUp, label: 'Evolução' },
               { id: 'settings', icon: Settings, label: 'Treinos' },
             ].map((item) => {
@@ -256,17 +266,17 @@ export default function App() {
                     setActiveView('dashboard');
                     setEditingLog(null);
                   }}
-                  className={`relative flex flex-col items-center justify-center gap-1 py-1 px-3 min-w-[64px] transition-all ${
-                    isActive ? 'text-accent' : 'text-text-dim'
+                  className={`relative flex flex-col items-center justify-center gap-1.5 py-1 px-4 transition-all duration-300 ${
+                    isActive ? 'text-primary scale-110' : 'text-muted-foreground'
                   }`}
                 >
-                  <item.icon className="h-5 w-5" />
-                  <span className="text-[10px] font-bold tracking-tight">{item.label}</span>
+                  <item.icon className={`h-5 w-5 ${isActive ? 'stroke-[2.5px]' : ''}`} />
+                  <span className="text-[10px] font-bold tracking-wide">{item.label}</span>
                   
                   {isActive && (
                     <motion.div 
                       layoutId="activeTabIndicator"
-                      className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-8 h-0.5 bg-accent rounded-full shadow-[0_0_8px_rgba(var(--accent-rgb),0.5)]"
+                      className="absolute -bottom-1 w-1.5 h-1.5 bg-primary rounded-full"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}

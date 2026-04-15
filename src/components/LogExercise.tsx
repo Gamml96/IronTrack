@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { Loader2, Save, Plus, Minus } from 'lucide-react';
+import { Loader2, Save, Plus, Minus, Dumbbell } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Set {
@@ -120,30 +120,35 @@ export const LogExercise: React.FC<LogExerciseProps> = ({
   };
 
   return (
-    <Card className="border-border bg-card text-text-main shadow-xl">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between text-xl font-bold tracking-tight">
-          <span>{logId ? `Editar: ${exerciseName}` : exerciseName}</span>
-          {loadingLast && <Loader2 className="h-4 w-4 animate-spin text-accent" />}
+    <Card className="border-border/50 bg-card text-foreground shadow-2xl rounded-[var(--radius-lg)] overflow-hidden">
+      <CardHeader className="bg-primary/5 border-b border-border/50">
+        <CardTitle className="flex items-center justify-between text-xl font-bold tracking-tight py-2">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-xl">
+              <Dumbbell className="h-5 w-5 text-primary" />
+            </div>
+            <span>{logId ? `Editar: ${exerciseName}` : exerciseName}</span>
+          </div>
+          {loadingLast && <Loader2 className="h-4 w-4 animate-spin text-primary" />}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8 p-6 lg:p-8">
         <RestTimer />
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {sets.map((set, i) => (
-            <div key={i} className="p-4 rounded-xl bg-background/40 border border-border/50 space-y-3 relative group">
+            <div key={i} className="p-5 rounded-3xl bg-background/50 border border-border/50 space-y-4 relative group transition-all hover:border-primary/30">
               <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center justify-center h-5 w-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center justify-center h-6 w-6 rounded-xl bg-primary/20 text-primary text-xs font-bold">
                     {i + 1}
                   </span>
-                  <Label className="text-[10px] uppercase tracking-widest text-text-dim font-bold">Série</Label>
+                  <Label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Série</Label>
                 </div>
                 
                 <div className="flex items-center gap-3">
                   {lastSets && lastSets[i] && (
-                    <span className="text-[9px] text-accent/60 font-mono uppercase bg-accent/5 px-2 py-0.5 rounded border border-accent/10">
+                    <span className="text-[10px] text-primary/70 font-bold uppercase bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
                       Anterior: {lastSets[i].weight}kg x {lastSets[i].reps}
                     </span>
                   )}
@@ -151,22 +156,22 @@ export const LogExercise: React.FC<LogExerciseProps> = ({
                     variant="ghost" 
                     size="icon" 
                     onClick={() => removeSet(i)}
-                    className="h-6 w-6 text-text-dim hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-8 w-8 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-all rounded-full hover:bg-destructive/10"
                   >
-                    <Minus className="h-3 w-3" />
+                    <Minus className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {/* Weight Stepper */}
-                <div className="space-y-1.5">
-                  <Label className="text-[9px] text-text-dim uppercase font-bold ml-1">Peso (kg)</Label>
-                  <div className="flex items-center bg-card rounded-lg border border-border p-0.5 shadow-inner h-11">
+                <div className="space-y-2">
+                  <Label className="text-[10px] text-muted-foreground uppercase font-bold ml-2">Peso (kg)</Label>
+                  <div className="flex items-center bg-card rounded-2xl border border-border/60 p-1 shadow-sm h-12">
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 shrink-0 text-text-dim hover:text-accent hover:bg-accent/10"
+                      className="h-10 w-10 shrink-0 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl"
                       onClick={() => updateSet(i, 'weight', Math.max(0, set.weight - 1))}
                     >
                       <Minus className="h-4 w-4" />
@@ -182,12 +187,12 @@ export const LogExercise: React.FC<LogExerciseProps> = ({
                         }
                       }}
                       onFocus={(e) => e.target.select()}
-                      className="flex-1 bg-transparent text-center font-mono text-base font-bold focus:outline-none min-w-0 w-full h-full"
+                      className="flex-1 bg-transparent text-center font-bold text-lg focus:outline-none min-w-0 w-full h-full text-foreground"
                     />
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 shrink-0 text-text-dim hover:text-accent hover:bg-accent/10"
+                      className="h-10 w-10 shrink-0 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl"
                       onClick={() => updateSet(i, 'weight', set.weight + 1)}
                     >
                       <Plus className="h-4 w-4" />
@@ -196,13 +201,13 @@ export const LogExercise: React.FC<LogExerciseProps> = ({
                 </div>
 
                 {/* Reps Stepper */}
-                <div className="space-y-1.5">
-                  <Label className="text-[9px] text-text-dim uppercase font-bold ml-1">Reps</Label>
-                  <div className="flex items-center bg-card rounded-lg border border-border p-0.5 shadow-inner h-11">
+                <div className="space-y-2">
+                  <Label className="text-[10px] text-muted-foreground uppercase font-bold ml-2">Reps</Label>
+                  <div className="flex items-center bg-card rounded-2xl border border-border/60 p-1 shadow-sm h-12">
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 shrink-0 text-text-dim hover:text-accent hover:bg-accent/10"
+                      className="h-10 w-10 shrink-0 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl"
                       onClick={() => updateSet(i, 'reps', Math.max(0, set.reps - 1))}
                     >
                       <Minus className="h-4 w-4" />
@@ -218,12 +223,12 @@ export const LogExercise: React.FC<LogExerciseProps> = ({
                         }
                       }}
                       onFocus={(e) => e.target.select()}
-                      className="flex-1 bg-transparent text-center font-mono text-base font-bold focus:outline-none min-w-0 w-full h-full"
+                      className="flex-1 bg-transparent text-center font-bold text-lg focus:outline-none min-w-0 w-full h-full text-foreground"
                     />
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 shrink-0 text-text-dim hover:text-accent hover:bg-accent/10"
+                      className="h-10 w-10 shrink-0 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl"
                       onClick={() => updateSet(i, 'reps', set.reps + 1)}
                     >
                       <Plus className="h-4 w-4" />
@@ -235,11 +240,11 @@ export const LogExercise: React.FC<LogExerciseProps> = ({
           ))}
         </div>
 
-        <div className="flex gap-3">
-          <Button variant="outline" onClick={addSet} className="flex-1 border-border bg-background hover:bg-card text-xs font-bold uppercase tracking-wider">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <Button variant="outline" onClick={addSet} className="flex-1 h-12 rounded-2xl border-primary/20 bg-background hover:bg-primary/5 text-primary font-bold uppercase tracking-wider text-xs">
             <Plus className="h-4 w-4 mr-2" /> Adicionar Série
           </Button>
-          <Button onClick={handleSave} disabled={saving} className="flex-1 bg-accent hover:bg-accent/90 text-background font-bold uppercase tracking-wider">
+          <Button onClick={handleSave} disabled={saving} className="flex-1 h-12 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider text-xs shadow-lg shadow-primary/20">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
             Salvar Treino
           </Button>
