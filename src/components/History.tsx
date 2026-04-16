@@ -69,7 +69,12 @@ export const History: React.FC<HistoryProps> = ({ user, onEdit }) => {
                   <h3 className="font-bold text-lg text-primary tracking-tight leading-none">{log.exerciseName}</h3>
                   <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-medium uppercase">
                     <Calendar className="h-3.5 w-3.5" />
-                    {format(new Date(log.date), "dd MMM, HH:mm", { locale: ptBR })}
+                    {(() => {
+                      const date = log.date && typeof (log.date as any).toDate === 'function'
+                        ? (log.date as any).toDate()
+                        : new Date(log.date);
+                      return format(date, "dd MMM, HH:mm", { locale: ptBR });
+                    })()}
                   </div>
                 </div>
                 <div className="flex gap-2">

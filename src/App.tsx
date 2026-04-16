@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ExerciseTemplate } from './types';
 import { AuthWrapper } from './components/AuthWrapper';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { WorkoutTemplates } from './components/WorkoutTemplates';
 import { History } from './components/History';
 import { Progress } from './components/Progress';
@@ -52,7 +53,8 @@ export default function App() {
 
   return (
     <ThemeProvider defaultTheme="light">
-      <AuthWrapper>
+      <ErrorBoundary>
+        <AuthWrapper>
         {(user) => (
           <div className="flex flex-col lg:flex-row min-h-screen bg-background text-foreground font-sans overflow-hidden">
             <Toaster position="top-center" richColors />
@@ -295,6 +297,7 @@ export default function App() {
         </div>
       )}
     </AuthWrapper>
+    </ErrorBoundary>
     </ThemeProvider>
   );
 }

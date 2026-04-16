@@ -60,7 +60,12 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ user }) => {
     }
 
     const today = startOfDay(new Date());
-    const uniqueDays = new Set(logs.map(l => startOfDay(new Date(l.date)).toISOString()));
+    const uniqueDays = new Set(logs.map(l => {
+      const date = l.date && typeof (l.date as any).toDate === 'function' 
+        ? (l.date as any).toDate() 
+        : new Date(l.date);
+      return startOfDay(date).toISOString();
+    }));
     const sortedUniqueDays = Array.from(uniqueDays).map(d => new Date(d)).sort((a, b) => b.getTime() - a.getTime());
 
     // 1. Status
