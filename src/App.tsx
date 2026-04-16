@@ -4,7 +4,7 @@ import { AuthWrapper } from './components/AuthWrapper';
 import { WorkoutTemplates } from './components/WorkoutTemplates';
 import { History } from './components/History';
 import { Progress } from './components/Progress';
-import { LogExercise } from './components/LogExercise';
+import { LogExerciseV2 } from './components/LogExerciseV2';
 import { UserTemplatesList } from './components/UserTemplatesList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Button } from './components/ui/button';
@@ -237,12 +237,15 @@ export default function App() {
                   </Button>
                   
                   {selectedExercise && (
-                    <LogExercise 
+                    <LogExerciseV2 
+                      key={`${selectedExercise.name}-${editingLog?.id || 'new'}`}
                       user={user} 
                       exerciseName={selectedExercise.name} 
-                      initialSets={[{ reps: selectedExercise.reps, weight: 0 }]}
+                      initialSets={Array.from({ length: selectedExercise.sets || 1 }, () => ({ reps: selectedExercise.reps || 10, weight: 0 }))}
                       onComplete={handleCompleteLogging}
                       logId={editingLog?.id}
+                      defaultReps={selectedExercise.reps || 10}
+                      defaultWeight={0}
                     />
                   )}
                 </motion.div>

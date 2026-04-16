@@ -149,7 +149,7 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ user }) => {
               <item.icon className={`h-3.5 w-3.5 group-hover:rotate-12 transition-transform`} />
             </div>
           </div>
-          <p className={`text-lg lg:text-2xl font-bold tracking-tight ${item.color}`}>
+          <p className={`text-base lg:text-2xl font-bold tracking-tight ${item.color}`}>
             {item.value}
           </p>
         </motion.div>
