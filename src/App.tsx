@@ -36,7 +36,11 @@ export default function App() {
 
   const handleEditLog = (log: any) => {
     setEditingLog(log);
-    setSelectedExercise(log.exerciseName);
+    setSelectedExercise({ 
+      name: log.exerciseName, 
+      sets: log.sets.length, 
+      reps: log.sets[0]?.reps || 10 
+    });
     setActiveView('logging');
   };
 
@@ -241,11 +245,11 @@ export default function App() {
                       key={`${selectedExercise.name}-${editingLog?.id || 'new'}`}
                       user={user} 
                       exerciseName={selectedExercise.name} 
-                      initialSets={Array.from({ length: selectedExercise.sets || 1 }, () => ({ reps: selectedExercise.reps || 10, weight: 0 }))}
+                      initialSets={editingLog ? editingLog.sets : Array.from({ length: selectedExercise.sets || 1 }, () => ({ reps: selectedExercise.reps || 10, weight: 0 }))}
                       onComplete={handleCompleteLogging}
                       logId={editingLog?.id}
                       defaultReps={selectedExercise.reps || 10}
-                      defaultWeight={0}
+                      defaultWeight={editingLog?.sets[0]?.weight || 0}
                     />
                   )}
                 </motion.div>

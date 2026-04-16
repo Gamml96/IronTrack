@@ -189,7 +189,7 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
               return (
                 <button
                   key={i}
-                  onClick={() => onSelectExercise(ex.name)}
+                  onClick={() => onSelectExercise(ex)}
                   className={`flex items-center justify-between p-5 hover:bg-primary/5 transition-all duration-300 group/item w-full text-left ${isDone ? 'bg-success/5' : ''}`}
                 >
                   <div className="flex items-center gap-4">

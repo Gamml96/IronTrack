@@ -68,9 +68,7 @@ export const LogExerciseV2: React.FC<LogExerciseV2Props> = ({
   }, [user.uid, exerciseName, logId]);
 
   const addSet = () => {
-    const setsToAdd = initialSets.length || 1;
-    const newSets = Array.from({ length: setsToAdd }, () => ({ reps: defaultReps, weight: defaultWeight }));
-    setSets([...sets, ...newSets]);
+    setSets([...sets, { reps: defaultReps, weight: defaultWeight }]);
   };
 
   const removeSet = (index: number) => {
