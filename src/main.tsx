@@ -13,8 +13,15 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+console.log('App starting...');
+
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  console.error('Failed to find root element');
+} else {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}

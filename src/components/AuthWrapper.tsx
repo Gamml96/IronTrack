@@ -4,7 +4,7 @@ import { signInWithPopup, onAuthStateChanged, User, signOut } from 'firebase/aut
 import { doc, setDoc, getDoc, Timestamp } from 'firebase/firestore';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Dumbbell, LogIn, LogOut, Loader2 } from 'lucide-react';
+import { Dumbbell, LogIn, LogOut, Loader2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface AuthWrapperProps {
@@ -14,13 +14,21 @@ interface AuthWrapperProps {
 export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loading) {
+        setError("O carregamento está demorando mais que o esperado. Verifique sua conexão ou as configurações do Firebase.");
+      }
+    }, 10000);
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        // Ensure user document exists
-        const userRef = doc(db, 'users', currentUser.uid);
-        try {
+      clearTimeout(timeout);
+      try {
+        if (currentUser) {
+          // Ensure user document exists
+          const userRef = doc(db, 'users', currentUser.uid);
           const userSnap = await getDoc(userRef);
           if (!userSnap.exists()) {
             await setDoc(userRef, {
@@ -30,17 +38,22 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
               createdAt: new Date().toISOString(),
             });
           }
-        } catch (error) {
-          handleFirestoreError(error, OperationType.GET, `users/${currentUser.uid}`);
+          setUser(currentUser);
+        } else {
+          setUser(null);
         }
-        setUser(currentUser);
-      } else {
-        setUser(null);
+      } catch (err: any) {
+        console.error("Auth error:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleLogin = async () => {
@@ -50,6 +63,17 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
       console.error("Login failed", error);
     }
   };
+
+  if (error) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-background p-6 text-center">
+        <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
+        <h2 className="text-xl font-bold mb-2">Erro de Inicialização</h2>
+        <p className="text-muted-foreground mb-6 max-w-sm">{error}</p>
+        <Button onClick={() => window.location.reload()}>Tentar Novamente</Button>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

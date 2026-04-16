@@ -17,6 +17,7 @@ import {
 } from './ui/dialog';
 
 import { Template, ExerciseTemplate } from '../types';
+import { parseSafeDate } from '../lib/dateUtils';
 
 interface Log {
   exerciseName: string;
@@ -85,12 +86,12 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
         if (a.order !== undefined && b.order !== undefined) {
           return a.order - b.order;
         }
-        return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime();
+        return parseSafeDate(a.createdAt || 0).getTime() - parseSafeDate(b.createdAt || 0).getTime();
       }
 
       if (!a.lastCompletedAt) return -1;
       if (!b.lastCompletedAt) return 1;
-      return new Date(a.lastCompletedAt).getTime() - new Date(b.lastCompletedAt).getTime();
+      return parseSafeDate(a.lastCompletedAt).getTime() - parseSafeDate(b.lastCompletedAt).getTime();
     });
   };
 

@@ -45,32 +45,73 @@ export class ErrorBoundary extends React.Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-          <Card className="max-w-md w-full border-destructive/50 shadow-2xl rounded-3xl overflow-hidden">
-            <CardHeader className="bg-destructive/5 border-b border-destructive/20 p-6">
-              <CardTitle className="flex items-center gap-3 text-destructive">
-                <AlertTriangle className="h-6 w-6" />
-                Ops! Algo deu errado
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-4">
-              <p className="text-foreground font-medium">
-                {errorMessage}
-              </p>
-              {technicalDetails && (
-                <div className="p-3 bg-muted rounded-xl text-[10px] font-mono text-muted-foreground break-all overflow-auto max-h-32">
-                  {technicalDetails}
-                </div>
-              )}
-              <Button 
-                onClick={() => window.location.reload()} 
-                className="w-full h-12 gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-2xl"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Recarregar Aplicativo
-              </Button>
-            </CardContent>
-          </Card>
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem',
+          backgroundColor: '#0a0a0a',
+          color: '#ffffff',
+          fontFamily: 'sans-serif'
+        }}>
+          <div style={{
+            maxWidth: '400px',
+            width: '100%',
+            backgroundColor: '#1a1a1a',
+            border: '1px solid #333',
+            borderRadius: '24px',
+            padding: '2rem',
+            textAlign: 'center',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
+          }}>
+            <div style={{ color: '#ff4444', marginBottom: '1rem' }}>
+              <AlertTriangle size={48} style={{ margin: '0 auto' }} />
+            </div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
+              Ops! Algo deu errado
+            </h2>
+            <p style={{ color: '#aaa', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+              {errorMessage}
+            </p>
+            {technicalDetails && (
+              <div style={{
+                padding: '0.75rem',
+                backgroundColor: '#000',
+                borderRadius: '12px',
+                fontSize: '0.7rem',
+                fontFamily: 'monospace',
+                color: '#666',
+                wordBreak: 'break-all',
+                maxHeight: '100px',
+                overflowY: 'auto',
+                marginBottom: '1.5rem',
+                textAlign: 'left'
+              }}>
+                {technicalDetails}
+              </div>
+            )}
+            <button 
+              onClick={() => window.location.reload()} 
+              style={{
+                width: '100%',
+                height: '3.5rem',
+                backgroundColor: '#ff4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '16px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem'
+              }}
+            >
+              <RefreshCw size={18} />
+              Recarregar Aplicativo
+            </button>
+          </div>
         </div>
       );
     }

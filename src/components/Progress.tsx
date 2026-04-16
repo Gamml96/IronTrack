@@ -7,6 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { parseSafeDate } from '../lib/dateUtils';
 import { TrendingUp } from 'lucide-react';
 
 interface Log {
@@ -50,7 +51,7 @@ export const Progress: React.FC<{ user: User }> = ({ user }) => {
   const chartData = logs
     .filter(l => l.exerciseName === selectedExercise)
     .map(l => ({
-      date: format(new Date(l.date), 'dd/MM'),
+      date: format(parseSafeDate(l.date), 'dd/MM'),
       weight: Math.max(...l.sets.map(s => s.weight)),
       volume: l.sets.reduce((acc, s) => acc + (s.weight * s.reps), 0)
     }));
