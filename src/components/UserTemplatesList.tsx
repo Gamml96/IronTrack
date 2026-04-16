@@ -16,14 +16,7 @@ import {
   DialogTrigger 
 } from './ui/dialog';
 
-interface Template {
-  id: string;
-  name: string;
-  exercises: string[];
-  order?: number;
-  lastCompletedAt?: string;
-  createdAt?: string;
-}
+import { Template, ExerciseTemplate } from '../types';
 
 interface Log {
   exerciseName: string;
@@ -32,7 +25,7 @@ interface Log {
 
 interface UserTemplatesListProps {
   user: User;
-  onSelectExercise: (ex: string) => void;
+  onSelectExercise: (ex: ExerciseTemplate) => void;
 }
 
 export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSelectExercise }) => {
@@ -152,7 +145,7 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
 
   if (!nextWorkout) return null;
 
-  const allExercisesDone = nextWorkout.exercises.every(ex => completedExercises.includes(ex));
+  const allExercisesDone = nextWorkout.exercises.every(ex => completedExercises.includes(ex.name));
 
   return (
     <div className="space-y-5">
@@ -192,11 +185,11 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
         <CardContent className="p-0">
           <div className="grid divide-y divide-border/30">
             {nextWorkout.exercises.map((ex, i) => {
-              const isDone = completedExercises.includes(ex);
+              const isDone = completedExercises.includes(ex.name);
               return (
                 <button
                   key={i}
-                  onClick={() => onSelectExercise(ex)}
+                  onClick={() => onSelectExercise(ex.name)}
                   className={`flex items-center justify-between p-5 hover:bg-primary/5 transition-all duration-300 group/item w-full text-left ${isDone ? 'bg-success/5' : ''}`}
                 >
                   <div className="flex items-center gap-4">
@@ -207,9 +200,14 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
                     }`}>
                       {isDone ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
                     </div>
-                    <span className={`text-sm font-bold transition-all duration-300 ${
-                      isDone ? 'text-muted-foreground line-through opacity-60' : 'text-foreground group-hover/item:text-primary group-hover/item:translate-x-1'
-                    }`}>{ex}</span>
+                    <div className="flex flex-col">
+                      <span className={`text-sm font-bold transition-all duration-300 ${
+                        isDone ? 'text-muted-foreground line-through opacity-60' : 'text-foreground group-hover/item:text-primary group-hover/item:translate-x-1'
+                      }`}>{ex.name}</span>
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                        {ex.sets} x {ex.reps}
+                      </span>
+                    </div>
                   </div>
                   <ChevronRight className={`h-5 w-5 transition-all duration-300 ${
                     isDone ? 'text-success' : 'text-muted-foreground group-hover/item:text-primary group-hover/item:translate-x-1'

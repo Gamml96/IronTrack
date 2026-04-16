@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ExerciseTemplate } from './types';
 import { AuthWrapper } from './components/AuthWrapper';
 import { WorkoutTemplates } from './components/WorkoutTemplates';
 import { History } from './components/History';
@@ -27,7 +28,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 
 export default function App() {
   const [activeView, setActiveView] = useState<'dashboard' | 'logging'>('dashboard');
-  const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<ExerciseTemplate | null>(null);
   const [activeTab, setActiveTab] = useState('today');
   const [editingLog, setEditingLog] = useState<any>(null);
 
@@ -196,7 +197,7 @@ export default function App() {
                                   size="default"
                                   className="rounded-2xl border-primary/20 bg-card hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm hover:shadow-md"
                                   onClick={() => {
-                                    setSelectedExercise(ex);
+                                    setSelectedExercise({ name: ex, sets: 3, reps: 10 });
                                     setActiveView('logging');
                                   }}
                                 >
@@ -238,9 +239,9 @@ export default function App() {
                   {selectedExercise && (
                     <LogExercise 
                       user={user} 
-                      exerciseName={selectedExercise} 
+                      exerciseName={selectedExercise.name} 
+                      initialSets={[{ reps: selectedExercise.reps, weight: 0 }]}
                       onComplete={handleCompleteLogging}
-                      initialSets={editingLog?.sets}
                       logId={editingLog?.id}
                     />
                   )}

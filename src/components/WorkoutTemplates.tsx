@@ -10,17 +10,12 @@ import { Plus, Trash2, Edit2, X, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 
-interface Template {
-  id: string;
-  name: string;
-  exercises: string[];
-  dayOfWeek?: string;
-}
+import { Template, ExerciseTemplate } from '../types';
 
 export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [newName, setNewName] = useState('');
-  const [newExercises, setNewExercises] = useState('');
+  const [newExercises, setNewExercises] = useState<ExerciseTemplate[]>([]);
   const [newDay, setNewDay] = useState<string>('');
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -48,16 +43,30 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
     return () => unsubscribe();
   }, [user.uid]);
 
+  const addExercise = () => {
+    setNewExercises([...newExercises, { name: '', sets: 3, reps: 10 }]);
+  };
+
+  const updateExercise = (index: number, field: keyof ExerciseTemplate, value: string | number) => {
+    const updated = [...newExercises];
+    updated[index] = { ...updated[index], [field]: value };
+    setNewExercises(updated);
+  };
+
+  const removeExercise = (index: number) => {
+    setNewExercises(newExercises.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newName || !newExercises) return;
+    if (!newName || newExercises.length === 0) return;
 
     try {
       const data = {
         name: newName,
-        exercises: newExercises.split(',').map(e => e.trim()).filter(e => e !== ''),
+        exercises: newExercises,
         dayOfWeek: newDay || null,
-        order: templates.length, // Default order for new templates
+        order: templates.length,
         updatedAt: new Date().toISOString(),
       };
 
@@ -81,7 +90,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
   const handleEdit = (template: Template) => {
     setEditingId(template.id);
     setNewName(template.name);
-    setNewExercises(template.exercises.join(', '));
+    setNewExercises(template.exercises);
     setNewDay(template.dayOfWeek || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -89,7 +98,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
   const resetForm = () => {
     setEditingId(null);
     setNewName('');
-    setNewExercises('');
+    setNewExercises([]);
     setNewDay('');
   };
 
@@ -123,15 +132,48 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
                 className="h-12 bg-background/50 border-border/60 text-foreground focus:border-primary rounded-2xl px-5"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="exercises" className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold ml-2">Exercícios (separados por vírgula)</Label>
-              <Input 
-                id="exercises" 
-                value={newExercises} 
-                onChange={(e) => setNewExercises(e.target.value)}
-                placeholder="Ex: Supino Reto, Crucifixo, Tríceps Corda"
-                className="h-12 bg-background/50 border-border/60 text-foreground focus:border-primary rounded-2xl px-5"
-              />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold ml-2">Exercícios</Label>
+                <Button type="button" variant="outline" size="sm" onClick={addExercise} className="h-8 rounded-xl text-xs font-bold">
+                  <Plus className="h-3 w-3 mr-2" /> Adicionar
+                </Button>
+              </div>
+              {newExercises.map((ex, i) => (
+                <div key={i} className="flex flex-col gap-3 bg-background/50 p-4 rounded-2xl border border-border/60">
+                  <div className="flex gap-2 items-center">
+                    <Input 
+                      value={ex.name} 
+                      onChange={(e) => updateExercise(i, 'name', e.target.value)}
+                      placeholder="Nome do exercício"
+                      className="h-12 bg-background border-border/60 rounded-xl flex-1"
+                    />
+                    <Button type="button" variant="ghost" size="icon" onClick={() => removeExercise(i)} className="h-12 w-12 text-destructive hover:bg-destructive/10 rounded-xl shrink-0">
+                      <Trash2 className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <Label className="text-[10px] font-bold text-muted-foreground uppercase ml-1">Séries</Label>
+                      <Input 
+                        type="number"
+                        value={ex.sets} 
+                        onChange={(e) => updateExercise(i, 'sets', Number(e.target.value))}
+                        className="h-10 bg-background border-border/60 rounded-xl text-center"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Label className="text-[10px] font-bold text-muted-foreground uppercase ml-1">Reps</Label>
+                      <Input 
+                        type="number"
+                        value={ex.reps} 
+                        onChange={(e) => updateExercise(i, 'reps', Number(e.target.value))}
+                        className="h-10 bg-background border-border/60 rounded-xl text-center"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="space-y-2">
               <Label htmlFor="day" className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold ml-2">Dia da Semana (Opcional)</Label>
@@ -200,11 +242,14 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="flex flex-col gap-2 mt-2">
                     {template.exercises.map((ex, i) => (
-                      <span key={i} className="rounded-xl bg-muted/50 border border-border/30 px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                        {ex}
-                      </span>
+                      <div key={i} className="flex justify-between items-center rounded-xl bg-muted/50 border border-border/30 px-3 py-2">
+                        <span className="text-xs font-bold text-foreground">{ex.name}</span>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                          {ex.sets} x {ex.reps}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </CardContent>
