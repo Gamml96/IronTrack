@@ -6,7 +6,7 @@ import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react"
 
 const Select = SelectPrimitive.Root
 
-function SelectGroup({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) {
+function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (
     <SelectPrimitive.Group
       data-slot="select-group"
@@ -16,7 +16,7 @@ function SelectGroup({ className, ...props }: React.ComponentProps<typeof Select
   )
 }
 
-function SelectValue({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
+function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
@@ -31,7 +31,7 @@ function SelectTrigger({
   size = "default",
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+}: SelectPrimitive.Trigger.Props & {
   size?: "sm" | "default"
 }) {
   return (
@@ -63,9 +63,9 @@ function SelectContent({
   alignOffset = 0,
   alignItemWithTrigger = true,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Popup> &
+}: SelectPrimitive.Popup.Props &
   Pick<
-    React.ComponentProps<typeof SelectPrimitive.Positioner>,
+    SelectPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
   >) {
   return (
@@ -96,7 +96,7 @@ function SelectContent({
 function SelectLabel({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.GroupLabel>) {
+}: SelectPrimitive.GroupLabel.Props) {
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
@@ -110,7 +110,7 @@ function SelectItem({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: SelectPrimitive.Item.Props) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -137,7 +137,7 @@ function SelectItem({
 function SelectSeparator({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+}: SelectPrimitive.Separator.Props) {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"

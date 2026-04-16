@@ -5,7 +5,6 @@ import { User } from 'firebase/auth';
 import { motion } from 'motion/react';
 import { Activity, Flame, Target, BarChart3, Zap } from 'lucide-react';
 import { startOfDay, subDays, isSameDay, differenceInDays } from 'date-fns';
-import { parseSafeDate } from '../lib/dateUtils';
 
 interface Log {
   id: string;
@@ -61,10 +60,7 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ user }) => {
     }
 
     const today = startOfDay(new Date());
-    const uniqueDays = new Set(logs.map(l => {
-      const date = parseSafeDate(l.date);
-      return startOfDay(date).toISOString();
-    }));
+    const uniqueDays = new Set(logs.map(l => startOfDay(new Date(l.date)).toISOString()));
     const sortedUniqueDays = Array.from(uniqueDays).map(d => new Date(d)).sort((a, b) => b.getTime() - a.getTime());
 
     // 1. Status
@@ -95,7 +91,7 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ user }) => {
 
     // 4. Weekly Volume (Last 7 days)
     const sevenDaysAgo = subDays(new Date(), 7);
-    const weeklyLogs = logs.filter(l => parseSafeDate(l.date) >= sevenDaysAgo);
+    const weeklyLogs = logs.filter(l => new Date(l.date) >= sevenDaysAgo);
     const weeklyVolume = weeklyLogs.reduce((acc, log) => acc + log.sets.length, 0);
 
     // 5. Monthly Workouts

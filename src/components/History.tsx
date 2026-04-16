@@ -5,7 +5,6 @@ import { User } from 'firebase/auth';
 import { Card, CardContent } from './ui/card';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { parseSafeDate } from '../lib/dateUtils';
 import { History as HistoryIcon, Calendar, Trash2, Edit2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -70,7 +69,7 @@ export const History: React.FC<HistoryProps> = ({ user, onEdit }) => {
                   <h3 className="font-bold text-lg text-primary tracking-tight leading-none">{log.exerciseName}</h3>
                   <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-medium uppercase">
                     <Calendar className="h-3.5 w-3.5" />
-                    {format(parseSafeDate(log.date), "dd MMM, HH:mm", { locale: ptBR })}
+                    {format(new Date(log.date), "dd MMM, HH:mm", { locale: ptBR })}
                   </div>
                 </div>
                 <div className="flex gap-2">

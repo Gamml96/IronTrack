@@ -17,7 +17,6 @@ import {
 } from './ui/dialog';
 
 import { Template, ExerciseTemplate } from '../types';
-import { parseSafeDate } from '../lib/dateUtils';
 
 interface Log {
   exerciseName: string;
@@ -86,12 +85,12 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
         if (a.order !== undefined && b.order !== undefined) {
           return a.order - b.order;
         }
-        return parseSafeDate(a.createdAt || 0).getTime() - parseSafeDate(b.createdAt || 0).getTime();
+        return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime();
       }
 
       if (!a.lastCompletedAt) return -1;
       if (!b.lastCompletedAt) return 1;
-      return parseSafeDate(a.lastCompletedAt).getTime() - parseSafeDate(b.lastCompletedAt).getTime();
+      return new Date(a.lastCompletedAt).getTime() - new Date(b.lastCompletedAt).getTime();
     });
   };
 
@@ -190,7 +189,7 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
               return (
                 <button
                   key={i}
-                  onClick={() => onSelectExercise(ex)}
+                  onClick={() => onSelectExercise(ex.name)}
                   className={`flex items-center justify-between p-5 hover:bg-primary/5 transition-all duration-300 group/item w-full text-left ${isDone ? 'bg-success/5' : ''}`}
                 >
                   <div className="flex items-center gap-4">

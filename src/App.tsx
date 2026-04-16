@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ExerciseTemplate } from './types';
 import { AuthWrapper } from './components/AuthWrapper';
-import { ErrorBoundary } from './components/ErrorBoundary';
 import { WorkoutTemplates } from './components/WorkoutTemplates';
 import { History } from './components/History';
 import { Progress } from './components/Progress';
@@ -37,11 +36,7 @@ export default function App() {
 
   const handleEditLog = (log: any) => {
     setEditingLog(log);
-    setSelectedExercise({ 
-      name: log.exerciseName, 
-      sets: log.sets.length, 
-      reps: log.sets[0]?.reps || 10 
-    });
+    setSelectedExercise(log.exerciseName);
     setActiveView('logging');
   };
 
@@ -53,8 +48,7 @@ export default function App() {
 
   return (
     <ThemeProvider defaultTheme="light">
-      <ErrorBoundary>
-        <AuthWrapper>
+      <AuthWrapper>
         {(user) => (
           <div className="flex flex-col lg:flex-row min-h-screen bg-background text-foreground font-sans overflow-hidden">
             <Toaster position="top-center" richColors />
@@ -247,11 +241,11 @@ export default function App() {
                       key={`${selectedExercise.name}-${editingLog?.id || 'new'}`}
                       user={user} 
                       exerciseName={selectedExercise.name} 
-                      initialSets={editingLog ? editingLog.sets : Array.from({ length: selectedExercise.sets || 1 }, () => ({ reps: selectedExercise.reps || 10, weight: 0 }))}
+                      initialSets={Array.from({ length: selectedExercise.sets || 1 }, () => ({ reps: selectedExercise.reps || 10, weight: 0 }))}
                       onComplete={handleCompleteLogging}
                       logId={editingLog?.id}
                       defaultReps={selectedExercise.reps || 10}
-                      defaultWeight={editingLog?.sets[0]?.weight || 0}
+                      defaultWeight={0}
                     />
                   )}
                 </motion.div>
@@ -297,7 +291,6 @@ export default function App() {
         </div>
       )}
     </AuthWrapper>
-    </ErrorBoundary>
     </ThemeProvider>
   );
 }
