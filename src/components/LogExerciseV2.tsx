@@ -185,6 +185,9 @@ export const LogExerciseV2: React.FC<LogExerciseV2Props> = ({
                       onFocus={(e) => e.target.select()} 
                       className="flex-1 bg-transparent text-center font-bold text-xl focus:outline-none min-w-0 w-full h-full text-foreground" 
                     />
+                    <Button variant="ghost" size="icon" className="h-12 w-12 shrink-0 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl" onClick={() => updateSet(i, 'reps', set.reps + 1)}><Plus className="h-5 w-5" /></Button>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
