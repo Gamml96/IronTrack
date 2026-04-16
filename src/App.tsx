@@ -149,7 +149,7 @@ export default function App() {
                     <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4">
                       <div>
                         <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                          {activeTab === 'today' && 'Olá! Vamos treinar? ✨'}
+                          {activeTab === 'today' && 'Olá! Vamos treinar? 🏋️‍♂️'}
                           {activeTab === 'history' && 'Sua Jornada'}
                           {activeTab === 'progress' && 'Suas Conquistas'}
                           {activeTab === 'settings' && 'Minhas Rotinas'}

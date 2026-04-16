@@ -102,7 +102,7 @@ export const History: React.FC<HistoryProps> = ({ user, onEdit }) => {
         ))}
         {logs.length === 0 && (
           <div className="text-center py-12 text-muted-foreground italic text-sm bg-primary/5 rounded-3xl border border-dashed border-primary/20">
-            Nenhum treino registrado ainda. ✨
+            Nenhum treino registrado ainda. 🏋️‍♂️
           </div>
         )}
       </div>

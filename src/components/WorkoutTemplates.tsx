@@ -115,7 +115,7 @@ export const WorkoutTemplates: React.FC<{ user: User }> = ({ user }) => {
     <div className="space-y-10">
       <Card className="border-border/50 bg-card text-foreground shadow-2xl rounded-3xl overflow-hidden">
         <CardHeader className="bg-primary/5 border-b border-border/50 p-6 lg:p-8">
-          <CardTitle className="text-2xl font-bold tracking-tight">{editingId ? 'Editar Treino ✨' : 'Criar Novo Treino ✨'}</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">{editingId ? 'Editar Treino 🏋️‍♂️' : 'Criar Novo Treino 🏋️‍♂️'}</CardTitle>
           <CardDescription className="text-muted-foreground font-medium">
             {editingId ? 'Atualize os detalhes da sua rotina favorita' : 'Defina sua rotina semanal com carinho'}
           </CardDescription>

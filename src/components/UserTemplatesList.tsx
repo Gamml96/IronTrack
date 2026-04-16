@@ -137,7 +137,7 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
     return (
       <Card className="border-dashed border-primary/20 bg-primary/5 rounded-3xl">
         <CardContent className="p-8 text-center">
-          <p className="text-sm text-muted-foreground font-medium">Você ainda não criou nenhum treino. ✨</p>
+          <p className="text-sm text-muted-foreground font-medium">Você ainda não criou nenhum treino. 🏋️‍♂️</p>
         </CardContent>
       </Card>
     );
@@ -235,7 +235,7 @@ export const UserTemplatesList: React.FC<UserTemplatesListProps> = ({ user, onSe
             />
             <DialogContent className="bg-card border-border text-foreground rounded-3xl">
               <DialogHeader>
-                <DialogTitle className="text-xl font-bold">Finalizar Treino? ✨</DialogTitle>
+                <DialogTitle className="text-xl font-bold">Finalizar Treino? 🏋️‍♂️</DialogTitle>
                 <DialogDescription className="text-muted-foreground font-medium">
                   {allExercisesDone 
                     ? "Parabéns! Você completou todos os exercícios da rotina com maestria." 

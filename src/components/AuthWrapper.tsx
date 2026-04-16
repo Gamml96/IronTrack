@@ -87,7 +87,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
               </motion.div>
               <CardTitle className="text-4xl font-black tracking-tighter text-primary mb-2">IRONTRACK</CardTitle>
               <CardDescription className="text-muted-foreground font-medium text-base px-8">
-                Seu rastreador de treinos <span className="text-primary font-bold">adorável</span> e eficiente. ✨
+                Seu rastreador de treinos <span className="text-primary font-bold">adorável</span> e eficiente. 🏋️‍♂️
               </CardDescription>
             </CardHeader>
             <CardContent className="px-8 pb-12">
